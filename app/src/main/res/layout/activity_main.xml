@@ -1,26 +1,142 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:onClick="onClickDemo"
-        android:text="demo"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-</android.support.constraint.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8pt"
+            android:text="RAWBT Scheme"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/test1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="1. rawbt:default " />
+
+        <Button
+            android:id="@+id/test2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="2. rawbt:base64, " />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8pt"
+            android:text="Intent.SEND EXTRA_TEXT"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/test3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="3. String" />
+
+        <Button
+            android:id="@+id/test4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="4. CharSequence" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8pt"
+            android:text="Intent.VIEW or Intent.SEND EXTRA_STREAM with file:"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/test5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="5. SEND FILE:// Internal storage. ERROR "
+            android:textColor="@android:color/holo_red_dark" />
+
+        <Button
+            android:id="@+id/test6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="6. VIEW FILE:// Internal storage. ERROR"
+            android:textColor="@android:color/holo_red_dark" />
+
+
+        <Button
+            android:id="@+id/test7"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="7. SEND FILE:// External storage. " />
+
+        <Button
+            android:id="@+id/test8"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="8. VIEW FILE:// External storage. " />
+
+        <Button
+            android:id="@+id/test9"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="9. SEND FILE:// PUBLIC DIR" />
+
+        <Button
+            android:id="@+id/test10"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="10. VIEW FILE:// PUBLIC DIR " />
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8pt"
+            android:text="with android.resource:"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/test11"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="11. SEND " />
+
+        <Button
+            android:id="@+id/test12"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="12. VIEW  " />
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8pt"
+            android:text="!RIGHT WAY! with content:"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/test13"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="13. SHARE plain/text " />
+
+    </LinearLayout>
+</ScrollView>
