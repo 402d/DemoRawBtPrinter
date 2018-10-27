@@ -138,5 +138,19 @@
             android:layout_height="wrap_content"
             android:text="13. SHARE plain/text " />
 
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8pt"
+            android:text="Standart printing"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+        <Button
+            android:id="@+id/test14"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="14. DemoPrintAdapter " />
+
     </LinearLayout>
 </ScrollView>
