@@ -2,6 +2,7 @@ package ru.a402d.demorawbt;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -444,7 +445,7 @@ public class MainActivity extends AppCompatActivity {
     public void test13(Button button) {
         File file = generateInternalTempTxtIsWrongForFileScheme(13);
         Uri uri = FileProvider.getUriForFile(this, "ru.a402d.demorawbt.fileprovider", file);
-        ;
+
         Log.d("TEST", uri.toString());
 
         Intent intent = new Intent(Intent.ACTION_VIEW);
@@ -712,6 +713,43 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
+        button.setText("x");
+    }
+
+
+    /**
+     * see manifest :
+     *    <uses-permission android:name="ru.a402d.rawbtprinter.PERMISSION" />
+     *
+     * @param button
+     */
+    @OnClick(R.id.test15)
+    public void test15(Button button) {
+        String textToPrint = String.format(Locale.ROOT, demoStr, 15);
+
+        Intent intent = new Intent("ru.a402d.rawbtprinter.action.PRINT_RAWBT");
+        intent.putExtra("ru.a402d.rawbtprinter.extra.DATA",textToPrint);
+        intent.setPackage("ru.a402d.rawbtprinter");
+        startService(intent);
+        button.setText("x");
+    }
+    @OnClick(R.id.test16)
+    public void test16(Button button) {
+
+        byte[] bytesToPrint = new byte[0];
+        try {
+            bytesToPrint = String.format(Locale.ROOT, demoStr, 16).getBytes("cp866");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
+        // encode byte[] to base64
+        String base64ToPrint = "base64,"+Base64.encodeToString(bytesToPrint, Base64.DEFAULT);
+
+        Intent intent = new Intent("ru.a402d.rawbtprinter.action.PRINT_RAWBT");
+        intent.putExtra("ru.a402d.rawbtprinter.extra.DATA",base64ToPrint);
+        intent.setPackage("ru.a402d.rawbtprinter");
+        startService(intent);
         button.setText("x");
     }
 

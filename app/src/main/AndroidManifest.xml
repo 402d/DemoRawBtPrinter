@@ -3,6 +3,7 @@
     package="ru.a402d.demorawbt">
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="ru.a402d.rawbtprinter.PERMISSION" />
 
     <application
         android:allowBackup="true"

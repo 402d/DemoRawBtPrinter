@@ -152,5 +152,25 @@
             android:layout_height="wrap_content"
             android:text="14. DemoPrintAdapter " />
 
+        <TextView
+            android:id="@+id/textView7"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8pt"
+            android:text="RawBT as service"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/test15"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="15. StartService " />
+        <Button
+            android:id="@+id/test16"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="16. send bytes " />
+
     </LinearLayout>
 </ScrollView>
