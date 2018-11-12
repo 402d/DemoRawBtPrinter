@@ -11,6 +11,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <TextView
+            android:id="@+id/textView0"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:text="Raw Printer Application Integration Examples
+" />
+
 
         <TextView
             android:id="@+id/textView"
@@ -157,7 +165,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="8pt"
-            android:text="RawBT as service"
+            android:text="RawBT as service (new 2.80)"
             android:textSize="18sp"
             android:textStyle="bold" />
 
@@ -165,12 +173,34 @@
             android:id="@+id/test15"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="15. StartService " />
+            android:text="15. Start Service " />
         <Button
             android:id="@+id/test16"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="16. send bytes " />
+
+        <TextView
+            android:id="@+id/textView8"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:padding="8dp"
+            android:text="
+APP SOURCE CODE\n
+https://github.com/402d/DemoRawBtPrinter\n
+Copyright 2018, 402d\n
+The Unlicense\n
+http://unlicense.org\n
+\n
+OPEN SOURCE LICENSE\n
+1.Butter Knife\n
+https://github.com/JakeWharton/butterknife\n
+Copyright 2013 Jake Wharton\n
+Apache License 2.0\n
+http://www.apache.org/licenses/LICENSE-2.0\n
+
+" />
 
     </LinearLayout>
 </ScrollView>
