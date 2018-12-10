@@ -6,8 +6,8 @@ android {
         applicationId "ru.a402d.demorawbt"
         minSdkVersion 19
         targetSdkVersion 27
-        versionCode 4
-        versionName "1.03"
+        versionCode 5
+        versionName "1.04"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

@@ -223,7 +223,6 @@ public class MainActivity extends AppCompatActivity {
 
     @OnClick(R.id.test5)
     public void test5(Button button) {
-
         // HACK
         if (Build.VERSION.SDK_INT >= 24) {
             try {
@@ -242,13 +241,11 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra(Intent.EXTRA_STREAM, uri);
         intent.setType("text/plain");
         sendToPrint(intent);
-
         button.setText("x");
     }
 
     @OnClick(R.id.test6)
     public void test6(Button button) {
-
         // HACK
         if (Build.VERSION.SDK_INT >= 24) {
             try {
@@ -266,7 +263,6 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setDataAndType(uri, "text/plain");
         sendToPrint(intent);
-
         button.setText("x");
     }
 
@@ -275,7 +271,7 @@ public class MainActivity extends AppCompatActivity {
         // External storage is  not always available, because the user can mount the external storage as USB storage and in some cases remove it from the device.
         String textToPrint = String.format(Locale.ROOT, demoStr, i);
         final File file = new File(getExternalCacheDir(), "temp.txt");
-        FileWriter writer = null;
+        FileWriter writer;
         try {
             writer = new FileWriter(file);
             writer.write(textToPrint);
@@ -349,7 +345,7 @@ public class MainActivity extends AppCompatActivity {
         File file = new File(Environment.getExternalStoragePublicDirectory(
                 Environment.DIRECTORY_DOCUMENTS), "rawbt.txt");
         String textToPrint = String.format(Locale.ROOT, demoStr, i);
-        FileWriter writer = null;
+        FileWriter writer;
         try {
             writer = new FileWriter(file);
             writer.write(textToPrint);
@@ -598,8 +594,6 @@ public class MainActivity extends AppCompatActivity {
             /**
              *  Render method
              *
-             * @param printAttributes
-             * @return
              */
             private int computePageCount(PrintAttributes printAttributes) {
                 return 1;
@@ -609,8 +603,6 @@ public class MainActivity extends AppCompatActivity {
 
             /**
              * Render method
-             * @param page
-             * @param printAttributes
              */
             private void drawPage(PdfDocument.Page page, PrintAttributes printAttributes) {
                 // place picture in pdf file
@@ -637,13 +629,19 @@ public class MainActivity extends AppCompatActivity {
                         canvasBmp.getHeight()-borderWidth,
                         paint);
 
+                paint.setColor(Color.BLACK);
+                paint.setTextSize(11);
+                canvasBmp.drawText("size "+String.valueOf(canvasBmp.getWidth())+"x"+String.valueOf(canvasBmp.getHeight()), 24, 24, paint);
+                paint.setTextSize(24);
+                canvasBmp.drawText("Hello, BMP!", 54, 50, paint);
+
                 canvasPage.drawBitmap(bmp, 0, 0, null);
 
                 // direct on page
 
                 paint.setColor(Color.BLACK);
-                paint.setTextSize(11);
-                canvasPage.drawText("Hello,world!", 54, 100, paint);
+                paint.setTextSize(24);
+                canvasPage.drawText("Hello, PAGE!", 54, 100, paint);
 
 
             }
@@ -721,7 +719,6 @@ public class MainActivity extends AppCompatActivity {
      * see manifest :
      *    <uses-permission android:name="ru.a402d.rawbtprinter.PERMISSION" />
      *
-     * @param button
      */
     @OnClick(R.id.test15)
     public void test15(Button button) {
