@@ -465,12 +465,31 @@ public class MainActivity extends AppCompatActivity {
         class DemoDocumentAdapter extends PrintDocumentAdapter {
 
             private Activity mParentActivity;
+
             private PrintAttributes currentAttributes;
+            public void setCurrentAttributes(PrintAttributes currentAttributes) {
+                this.currentAttributes = currentAttributes;
+                final int density_w = currentAttributes.getResolution().getHorizontalDpi();
+                final int density_h = currentAttributes.getResolution().getVerticalDpi();
+
+                margin_left = Math.max(margin_left,(int) (density_w * (float) currentAttributes.getMinMargins().getLeftMils() / MILS_PER_INCH));
+                margin_top = Math.max(margin_top,(int) (density_h * (float) currentAttributes.getMinMargins().getTopMils() / MILS_PER_INCH));
+                margin_right = Math.max(margin_right,(int) (density_w * (float) currentAttributes.getMinMargins().getRightMils() / MILS_PER_INCH));
+                margin_bottom = Math.max(margin_bottom,(int) (density_h * (float) currentAttributes.getMinMargins().getBottomMils() / MILS_PER_INCH));
+
+            }
 
             private int totalPages ;
             private int mRenderPageWidth, mRenderPageHeight;
             boolean mIsPortrait = false;
             private PrintDocumentInfo printDocumentInfo ;
+
+            // margin
+            private  int margin_left=0;
+            private  int margin_right=0;
+            private  int margin_top=0;
+            private  int margin_bottom=0;
+
 
             public DemoDocumentAdapter(Activity activity) {
                 mParentActivity = activity;
@@ -492,8 +511,10 @@ public class MainActivity extends AppCompatActivity {
                 final int density_w = currentAttributes.getResolution().getHorizontalDpi();
                 final int density_h = currentAttributes.getResolution().getVerticalDpi();
 
-                final int margin_left = (int) (density_w * (float) currentAttributes.getMinMargins().getLeftMils() / MILS_PER_INCH);
-                final int margin_right = (int) (density_w * (float) currentAttributes.getMinMargins().getRightMils() / MILS_PER_INCH);
+                margin_left = Math.max(margin_left,(int) (density_w * (float) currentAttributes.getMinMargins().getLeftMils() / MILS_PER_INCH));
+                Log.d("TEST", "margin_left "+String.valueOf(margin_left));
+
+                margin_right = Math.max(margin_right,(int) (density_w * (float) currentAttributes.getMinMargins().getRightMils() / MILS_PER_INCH));
                 final int contentWidth = (int) (density_w * (float) currentAttributes.getMediaSize()
                         .getWidthMils() / MILS_PER_INCH) - margin_left - margin_right;
                 if (mRenderPageWidth != contentWidth) {
@@ -501,8 +522,9 @@ public class MainActivity extends AppCompatActivity {
                     shouldLayout = true;
                 }
 
-                final int margin_top = (int) (density_h * (float) currentAttributes.getMinMargins().getTopMils() / MILS_PER_INCH);
-                final int margin_bottom = (int) (density_h * (float) currentAttributes.getMinMargins().getBottomMils() / MILS_PER_INCH);
+                margin_top = Math.max(margin_top,(int) (density_h * (float) currentAttributes.getMinMargins().getTopMils() / MILS_PER_INCH));
+                margin_bottom = Math.max(margin_bottom,(int) (density_h * (float) currentAttributes.getMinMargins().getBottomMils() / MILS_PER_INCH));
+
                 final int contentHeight = (int) (density_h * (float) currentAttributes.getMediaSize()
                         .getHeightMils() / MILS_PER_INCH) - margin_top - margin_bottom;
                 if (mRenderPageHeight != contentHeight) {
@@ -542,7 +564,16 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("TEST", "onWrite s");
 
                 // Create a new PdfDocument with the requested page attributes
-                PrintedPdfDocument mPdfDocument = new PrintedPdfDocument(mParentActivity, currentAttributes);
+                PrintAttributes pdfAttributes = new PrintAttributes.Builder()
+                        .setMediaSize(currentAttributes.getMediaSize())
+                        .setResolution(currentAttributes.getResolution())
+                        .setMinMargins(new PrintAttributes.Margins(
+                                (int)margin_left*MILS_PER_INCH/72,
+                                (int)margin_top*MILS_PER_INCH/72,
+                                (int)margin_right*MILS_PER_INCH/72,
+                                (int)margin_bottom*MILS_PER_INCH/72
+                        )).build();
+                PrintedPdfDocument mPdfDocument = new PrintedPdfDocument(mParentActivity, pdfAttributes);
 
                 SparseIntArray writtenPages = new SparseIntArray();
 
@@ -632,6 +663,7 @@ public class MainActivity extends AppCompatActivity {
                 paint.setColor(Color.BLACK);
                 paint.setTextSize(11);
                 canvasBmp.drawText("size "+String.valueOf(canvasBmp.getWidth())+"x"+String.valueOf(canvasBmp.getHeight()), 24, 24, paint);
+                canvasBmp.drawText("media "+currentAttributes.getMediaSize().getId(), 54, 150, paint);
                 paint.setTextSize(24);
                 canvasBmp.drawText("Hello, BMP!", 54, 50, paint);
 
@@ -690,26 +722,31 @@ public class MainActivity extends AppCompatActivity {
                     if ((numPage >= pr.getStart()) && (numPage <= pr.getEnd())) return true;
                 }
                 return false;
+
             }
 
+            private void print(PrintManager printManager){
+                String jobName = getString(R.string.app_name) + " Document";
+                PrintAttributes printAttributes = new PrintAttributes.Builder()
+                        .setMediaSize(PrintAttributes.MediaSize.ISO_A4)
+                        .setResolution(new PrintAttributes.Resolution("Default", "72dpi: 1pt=1dot", 72, 72))
+                        .setMinMargins(new PrintAttributes.Margins(500,500,500,500))
+                        .build();
+                setCurrentAttributes(printAttributes);
+                printManager.print(jobName, this, printAttributes);
+            }
         }
 
-        //create object of print manager in your device
-        PrintManager printManager = (PrintManager) this.getSystemService(Context.PRINT_SERVICE);
 
         //create object of print adapter
-        PrintDocumentAdapter printAdapter = new DemoDocumentAdapter(this);
-
-        //provide name to your newly generated pdf file
-        String jobName = getString(R.string.app_name) + " Document";
-
-        //open print dialog
+        DemoDocumentAdapter printAdapter = new DemoDocumentAdapter(this);
+        //create object of print manager in your device
+        PrintManager printManager = (PrintManager) this.getSystemService(Context.PRINT_SERVICE);
         if (printManager != null) {
-            printManager.print(jobName, printAdapter, null);
+            printAdapter.print(printManager);
         } else {
             Toast.makeText(this, "Print service not available", Toast.LENGTH_LONG).show();
         }
-
 
         button.setText("x");
     }
