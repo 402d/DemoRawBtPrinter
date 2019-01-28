@@ -1,8 +1,10 @@
+**Immediately remove the transition to installing the application. The application is banned. The reason is “advertising in the form of standard dialogue elements”.**
+
+
 # Demo RawBtPrinter
 **How print to esc/pos printer from android**
 
 
-**Immediately remove the transition to installing the application. The application is banned. The reason is “advertising in the form of standard dialogue elements”.**
 
 
 
