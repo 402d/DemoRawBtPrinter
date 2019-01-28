@@ -93,11 +93,14 @@ public class MainActivity extends AppCompatActivity {
         }
         if (pi == null) {
             // go to install
+            /** AHTUNG !! WARNING !!!
+            It is Violation of Deceptive Ads police
             try {
                 startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
             } catch (android.content.ActivityNotFoundException anfe) {
                 startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
             }
+            **/ 
         } else {
             // send to print
             intent.setPackage(appPackageName);
