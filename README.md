@@ -1,6 +1,15 @@
 # Demo RawBtPrinter
 **How print to esc/pos printer from android**
 
+
+**Immediately remove the transition to installing the application. The application is banned. The reason is “advertising in the form of standard dialogue elements”.
+
+
+
+
+
+
+
 see code of [MainActivity](https://github.com/402d/DemoRawBtPrinter/blob/master/app/src/main/java/ru/a402d/demorawbt/MainActivity.java#L113) for examples
 
 [comments to code ](http://rawbt.402d.ru/intents.html)
