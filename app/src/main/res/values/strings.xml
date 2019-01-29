@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">Demo RawBt</string>
+    <string name="dialog_title">RawBT printer driver is missed</string>
+    <string name="dialog_message">To implement the functions of printing on a thermal printer, a driver is required. Press the button to open Google Play app and read more.</string>
+    <string name="btn_install">Open</string>
 </resources>

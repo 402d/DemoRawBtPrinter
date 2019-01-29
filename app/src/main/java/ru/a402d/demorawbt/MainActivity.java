@@ -2,8 +2,8 @@ package ru.a402d.demorawbt;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.Service;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -25,12 +25,16 @@ import android.print.PrintDocumentInfo;
 import android.print.PrintManager;
 import android.print.pdf.PrintedPdfDocument;
 import android.support.v4.content.FileProvider;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
 import android.util.SparseIntArray;
+import android.view.Gravity;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
@@ -92,15 +96,29 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         if (pi == null) {
-            // go to install
-            /** AHTUNG !! WARNING !!!
-            It is Violation of Deceptive Ads police
-            try {
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
-            } catch (android.content.ActivityNotFoundException anfe) {
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
-            }
-            **/ 
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            TextView title = new TextView(this);
+            title.setText(R.string.dialog_title);
+            title.setBackgroundColor(Color.DKGRAY);
+            title.setPadding(10, 10, 10, 10);
+            title.setGravity(Gravity.CENTER);
+            title.setTextColor(Color.WHITE);
+            title.setTextSize(14);
+            ImageView image = new ImageView(this);
+            image.setImageResource(R.drawable.baseline_print_black_48);
+            builder.setMessage(R.string.dialog_message)
+                    .setView(image).setCustomTitle(title);
+            builder.setPositiveButton(R.string.btn_install, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    try {
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+                    } catch (android.content.ActivityNotFoundException anfe) {
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+                    }
+                }
+            });
+            AlertDialog dialog = builder.create();
+            dialog.show();
         } else {
             // send to print
             intent.setPackage(appPackageName);
@@ -469,11 +487,29 @@ public class MainActivity extends AppCompatActivity {
 
             private Activity mParentActivity;
             private PrintAttributes currentAttributes;
+            public void setCurrentAttributes(PrintAttributes currentAttributes) {
+                this.currentAttributes = currentAttributes;
+                final int density_w = currentAttributes.getResolution().getHorizontalDpi();
+                final int density_h = currentAttributes.getResolution().getVerticalDpi();
+
+                margin_left = Math.max(margin_left,(int) (density_w * (float) currentAttributes.getMinMargins().getLeftMils() / MILS_PER_INCH));
+                margin_top = Math.max(margin_top,(int) (density_h * (float) currentAttributes.getMinMargins().getTopMils() / MILS_PER_INCH));
+                margin_right = Math.max(margin_right,(int) (density_w * (float) currentAttributes.getMinMargins().getRightMils() / MILS_PER_INCH));
+                margin_bottom = Math.max(margin_bottom,(int) (density_h * (float) currentAttributes.getMinMargins().getBottomMils() / MILS_PER_INCH));
+
+            }
 
             private int totalPages ;
             private int mRenderPageWidth, mRenderPageHeight;
             boolean mIsPortrait = false;
             private PrintDocumentInfo printDocumentInfo ;
+
+            // margin
+            private  int margin_left=0;
+            private  int margin_right=0;
+            private  int margin_top=0;
+            private  int margin_bottom=0;
+
 
             public DemoDocumentAdapter(Activity activity) {
                 mParentActivity = activity;
@@ -495,8 +531,10 @@ public class MainActivity extends AppCompatActivity {
                 final int density_w = currentAttributes.getResolution().getHorizontalDpi();
                 final int density_h = currentAttributes.getResolution().getVerticalDpi();
 
-                final int margin_left = (int) (density_w * (float) currentAttributes.getMinMargins().getLeftMils() / MILS_PER_INCH);
-                final int margin_right = (int) (density_w * (float) currentAttributes.getMinMargins().getRightMils() / MILS_PER_INCH);
+                margin_left = Math.max(margin_left,(int) (density_w * (float) currentAttributes.getMinMargins().getLeftMils() / MILS_PER_INCH));
+                Log.d("TEST", "margin_left "+String.valueOf(margin_left));
+
+                margin_right = Math.max(margin_right,(int) (density_w * (float) currentAttributes.getMinMargins().getRightMils() / MILS_PER_INCH));
                 final int contentWidth = (int) (density_w * (float) currentAttributes.getMediaSize()
                         .getWidthMils() / MILS_PER_INCH) - margin_left - margin_right;
                 if (mRenderPageWidth != contentWidth) {
@@ -504,8 +542,9 @@ public class MainActivity extends AppCompatActivity {
                     shouldLayout = true;
                 }
 
-                final int margin_top = (int) (density_h * (float) currentAttributes.getMinMargins().getTopMils() / MILS_PER_INCH);
-                final int margin_bottom = (int) (density_h * (float) currentAttributes.getMinMargins().getBottomMils() / MILS_PER_INCH);
+                margin_top = Math.max(margin_top,(int) (density_h * (float) currentAttributes.getMinMargins().getTopMils() / MILS_PER_INCH));
+                margin_bottom = Math.max(margin_bottom,(int) (density_h * (float) currentAttributes.getMinMargins().getBottomMils() / MILS_PER_INCH));
+
                 final int contentHeight = (int) (density_h * (float) currentAttributes.getMediaSize()
                         .getHeightMils() / MILS_PER_INCH) - margin_top - margin_bottom;
                 if (mRenderPageHeight != contentHeight) {
@@ -545,7 +584,16 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("TEST", "onWrite s");
 
                 // Create a new PdfDocument with the requested page attributes
-                PrintedPdfDocument mPdfDocument = new PrintedPdfDocument(mParentActivity, currentAttributes);
+                PrintAttributes pdfAttributes = new PrintAttributes.Builder()
+                        .setMediaSize(currentAttributes.getMediaSize())
+                        .setResolution(currentAttributes.getResolution())
+                        .setMinMargins(new PrintAttributes.Margins(
+                                (int)margin_left*MILS_PER_INCH/72,
+                                (int)margin_top*MILS_PER_INCH/72,
+                                (int)margin_right*MILS_PER_INCH/72,
+                                (int)margin_bottom*MILS_PER_INCH/72
+                        )).build();
+                PrintedPdfDocument mPdfDocument = new PrintedPdfDocument(mParentActivity, pdfAttributes);
 
                 SparseIntArray writtenPages = new SparseIntArray();
 
@@ -635,6 +683,7 @@ public class MainActivity extends AppCompatActivity {
                 paint.setColor(Color.BLACK);
                 paint.setTextSize(11);
                 canvasBmp.drawText("size "+String.valueOf(canvasBmp.getWidth())+"x"+String.valueOf(canvasBmp.getHeight()), 24, 24, paint);
+                canvasBmp.drawText("media "+currentAttributes.getMediaSize().getId(), 54, 150, paint);
                 paint.setTextSize(24);
                 canvasBmp.drawText("Hello, BMP!", 54, 50, paint);
 
@@ -695,24 +744,28 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
 
+            private void print(PrintManager printManager){
+                String jobName = getString(R.string.app_name) + " Document";
+                PrintAttributes printAttributes = new PrintAttributes.Builder()
+                        .setMediaSize(PrintAttributes.MediaSize.ISO_A4)
+                        .setResolution(new PrintAttributes.Resolution("Default", "72dpi: 1pt=1dot", 72, 72))
+                        .setMinMargins(new PrintAttributes.Margins(500,500,500,500))
+                        .build();
+                setCurrentAttributes(printAttributes);
+                printManager.print(jobName, this, printAttributes);
+            }
         }
 
-        //create object of print manager in your device
-        PrintManager printManager = (PrintManager) this.getSystemService(Context.PRINT_SERVICE);
 
         //create object of print adapter
-        PrintDocumentAdapter printAdapter = new DemoDocumentAdapter(this);
-
-        //provide name to your newly generated pdf file
-        String jobName = getString(R.string.app_name) + " Document";
-
-        //open print dialog
+        DemoDocumentAdapter printAdapter = new DemoDocumentAdapter(this);
+        //create object of print manager in your device
+        PrintManager printManager = (PrintManager) this.getSystemService(Context.PRINT_SERVICE);
         if (printManager != null) {
-            printManager.print(jobName, printAdapter, null);
+            printAdapter.print(printManager);
         } else {
             Toast.makeText(this, "Print service not available", Toast.LENGTH_LONG).show();
         }
-
 
         button.setText("x");
     }
