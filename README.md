@@ -1,14 +1,7 @@
-**Immediately remove the transition to installing the application. The application is banned. The reason is “advertising in the form of standard dialogue elements”.**
 
 
 # Demo RawBtPrinter
 **How print to esc/pos printer from android**
-
-
-
-
-
-
 
 
 
@@ -24,7 +17,11 @@ see [test14()](https://github.com/402d/DemoRawBtPrinter/blob/master/app/src/main
 ## RawBtPrinter
 Created for the purpose of serving as a channel among other applications that require printing data on receipt printers using ESC/POS commands.
 
+## For clearaly label ads requement
 
+![dialog](https://cdn.jsdelivr.net/gh/402d/DemoRawBtPrinter@2fe1d13675526c2e321ca31ee731fc0ad17fcf24/gitdoc/dialog.png)  
+
+It is important fix !! 
 
 ## Screenshots of Demo
 
