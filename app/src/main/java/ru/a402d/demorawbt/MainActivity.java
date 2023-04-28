@@ -55,7 +55,6 @@ import butterknife.OnClick;
 public class MainActivity extends AppCompatActivity {
 
     private final String demoStr = "Тест %d пройден \n\n\n"; //  "Test %d completed.\n\n\n"
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -374,6 +373,8 @@ public class MainActivity extends AppCompatActivity {
             writer.close();
         } catch (Exception e) {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+            e.printStackTrace();
+            return null;
         }
         return file;
     }
@@ -392,6 +393,10 @@ public class MainActivity extends AppCompatActivity {
 
         // !! DON'T USE
         File file = generateInPublicDir(9);
+        if(file==null){
+            button.setText("-");
+            return;
+        }
         Uri uri = Uri.fromFile(file);
 
         Intent intent = new Intent(Intent.ACTION_SEND);
@@ -416,7 +421,12 @@ public class MainActivity extends AppCompatActivity {
 
         // !! DON'T USE
         File file = generateInPublicDir(10);
+        if(file==null){
+            button.setText("-");
+            return;
+        }
         Uri uri = Uri.fromFile(file);
+
 
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setDataAndType(uri, "text/plain"); // CORRECT set together !!!

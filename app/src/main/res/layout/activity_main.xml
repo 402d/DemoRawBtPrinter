@@ -94,6 +94,12 @@
             tools:ignore="HardcodedText"
             android:textColor="@android:color/holo_red_dark" />
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8pt"
+            android:text="(7-10) Does not work above 9 android"
+            tools:ignore="HardcodedText"  />
 
         <Button
             android:id="@+id/test7"
