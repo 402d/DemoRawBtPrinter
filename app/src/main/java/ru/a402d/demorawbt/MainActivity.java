@@ -605,7 +605,6 @@ public class MainActivity extends AppCompatActivity {
                                 (int)margin_bottom*MILS_PER_INCH/72
                         )).build();
                 PrintedPdfDocument mPdfDocument = new PrintedPdfDocument(mParentActivity, pdfAttributes);
-
                 SparseIntArray writtenPages = new SparseIntArray();
 
                 // Iterate over each page of the document, check if it's in the output range.
@@ -616,6 +615,7 @@ public class MainActivity extends AppCompatActivity {
                         // is used to compute the next output page index.
                         writtenPages.append(writtenPages.size(), i);
                         PdfDocument.Page page = mPdfDocument.startPage(i);
+
 
                         // check for cancellation
                         if (cancellationSignal.isCanceled()) {
@@ -668,6 +668,7 @@ public class MainActivity extends AppCompatActivity {
              */
             private void drawPage(PdfDocument.Page page, PrintAttributes printAttributes) {
                 // place picture in pdf file
+
                 Canvas canvasPage = page.getCanvas();
 
                 // useful
@@ -675,8 +676,15 @@ public class MainActivity extends AppCompatActivity {
 
                 // units are in points (1/72 of an inch)
                 // create picture printable size
-                Bitmap bmp = Bitmap.createBitmap(canvasPage.getWidth(), canvasPage.getHeight(), Bitmap.Config.ARGB_8888);
-
+                Bitmap bmp;
+                try {
+                    int x = page.getInfo().getPageWidth();
+                    int y = page.getInfo().getPageHeight();
+                    bmp = Bitmap.createBitmap(x, y, Bitmap.Config.ARGB_8888);
+                } catch (Exception e){
+                    e.printStackTrace();
+                    return;
+                }
                 // draw border for example in printable
                 Canvas canvasBmp = new Canvas(bmp);
 
