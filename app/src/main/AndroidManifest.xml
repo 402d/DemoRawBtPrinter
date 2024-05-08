@@ -8,6 +8,10 @@
 
     <queries>
         <package android:name="ru.a402d.rawbtprinter" />
+        <intent>
+            <action android:name="ru.a402d.rawbtprinter.action.PRINT_RAWBT" />
+            <category android:name="android.intent.category.DEFAULT" />
+        </intent>
     </queries>
     
     <application

@@ -192,7 +192,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="8pt"
-            android:text="RawBT as service (new 2.80)"
+            android:text="RawBT as service not working from v7.0"
             tools:ignore="HardcodedText"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -201,7 +201,7 @@
             android:id="@+id/test15"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="15. Start Service "
+            android:text="15. Fast fix run it  as startActivity "
             tools:ignore="HardcodedText" />
         <Button
             android:id="@+id/test16"

@@ -1,4 +1,4 @@
-
+[Use full API](https://github.com/402d/RawbtAPI)
 
 # Demo RawBtPrinter
 **How print to esc/pos printer from android**

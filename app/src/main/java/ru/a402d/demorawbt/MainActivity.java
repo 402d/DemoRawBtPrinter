@@ -4,7 +4,6 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -108,13 +107,11 @@ public class MainActivity extends AppCompatActivity {
             image.setImageResource(R.drawable.baseline_print_black_48);
             builder.setMessage(R.string.dialog_message)
                     .setView(image).setCustomTitle(title);
-            builder.setPositiveButton(R.string.btn_install, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    try {
-                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
-                    } catch (android.content.ActivityNotFoundException anfe) {
-                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
-                    }
+            builder.setPositiveButton(R.string.btn_install, (dialog, id) -> {
+                try {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+                } catch (android.content.ActivityNotFoundException anfe) {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
                 }
             });
             AlertDialog dialog = builder.create();
@@ -490,13 +487,13 @@ public class MainActivity extends AppCompatActivity {
      */
     @OnClick(R.id.test14)
     public void test14(Button button) {
-        /**
+        /*
          * It is better to make this class universal.
          * delegete computePageCount() & drawPage() into class Render.
          */
         class DemoDocumentAdapter extends PrintDocumentAdapter {
 
-            private Activity mParentActivity;
+            private final Activity mParentActivity;
             private PrintAttributes currentAttributes;
             public void setCurrentAttributes(PrintAttributes currentAttributes) {
                 this.currentAttributes = currentAttributes;
@@ -802,7 +799,7 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent("ru.a402d.rawbtprinter.action.PRINT_RAWBT");
         intent.putExtra("ru.a402d.rawbtprinter.extra.DATA",textToPrint);
         intent.setPackage("ru.a402d.rawbtprinter");
-        startService(intent);
+        startActivity(intent);
         button.setText("x");
     }
     @OnClick(R.id.test16)
@@ -821,7 +818,7 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent("ru.a402d.rawbtprinter.action.PRINT_RAWBT");
         intent.putExtra("ru.a402d.rawbtprinter.extra.DATA",base64ToPrint);
         intent.setPackage("ru.a402d.rawbtprinter");
-        startService(intent);
+        startActivity(intent);
         button.setText("x");
     }
 
